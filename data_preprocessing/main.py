@@ -35,18 +35,15 @@ for cat_col in categorical_columns:
     data[cat_col] = encoder.transform(data[cat_col])
     print(data[cat_col])
 
-# chuẩn hóa lại phạm vi các trường là [0,1]
-columns_to_scale = ['Annual Income ($)', 'Spending Score (1-100)', 'Profession', 'Work Experience']
+# chuẩn hóa dữ liệu
+columns_to_scale = ['Age', 'Annual Income ($)', 'Profession', 'Work Experience', 'Family Size']
 data[columns_to_scale] = ((data[columns_to_scale] - data[columns_to_scale].min()) /
                          (data[columns_to_scale].max() - data[columns_to_scale].min()))
 
 print(data)
 
 # Lưu dữ liệu đã chuẩn hóa vào một file mới
-# data.to_csv("Customers_data_preprocessing.csv", index=False)
-
-# # # export data sang txt
-# # np.savetxt(r'F:\bigdata\btl\data.txt', data_new.values, fmt='%1.2f', delimiter=',')
+data.to_csv("Customers_data_preprocessing.csv", index=False)
 
 #Elbow
 km = KMeans()
@@ -58,6 +55,7 @@ for k in k_range:
     km.fit(data)
     wcss.append(km.inertia_)
 
+# vẽ biểu đồ
 plt.plot(k_range,wcss,marker='o')
 plt.title('Elbow Method')
 plt.ylabel('WCSS')
