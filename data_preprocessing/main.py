@@ -1,46 +1,40 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from sklearn.preprocessing import LabelEncoder
 
 # đọc file csv
 data = pd.read_csv('Customers.csv')
 
-# loại bỏ cột CustomerID
-data = data.drop(['CustomerID'], axis='columns')
+# loại bỏ cột CustomerID, Gender
+data = data.drop(['CustomerID','Gender'], axis='columns')
 
-print("Số giá trị thiếu ban đầu:")
-print(data.isnull().sum())
-
-# Thay thế giá trị bị thiếu bằng giá trị xuất hiện thường xuyên nhất
+# Xử lý thuộc tính Profession bị thiếu giá trị
 data['Profession'].fillna(data['Profession'].mode()[0], inplace=True)
 
-print("Số giá trị thiếu sau khi đã xử lý:")
-print(data.isnull().sum())
+# One-hot encoding cho thuộc tính 'Profession'
+data = pd.get_dummies(data, columns=["Profession"], drop_first=True).astype(int)
 
+# Chuẩn hóa thuộc tính 'Annual Income ($)'
+Range = 'Annual Income New ($)'
+data[Range] = 0
+c = 'Annual Income ($)'
+data.loc[((data[c] > 0) & (data[c] <= 20000)), Range] = 1
+data.loc[((data[c] > 20000) & (data[c] <= 40000)), Range] = 2
+data.loc[((data[c] > 40000) & (data[c] <= 60000)), Range] = 3
+data.loc[((data[c] > 60000) & (data[c] <= 80000)), Range] = 4
+data.loc[((data[c] > 80000) & (data[c] <= 100000)), Range] = 5
+data.loc[((data[c] > 100000) & (data[c] <= 120000)), Range] = 6
+data.loc[((data[c] > 120000) & (data[c] <= 140000)), Range] = 7
+data.loc[((data[c] > 140000) & (data[c] <= 160000)), Range] = 8
+data.loc[((data[c] > 160000) & (data[c] <= 180000)), Range] = 9
+data.loc[((data[c] > 180000) & (data[c] <= 200000)), Range] = 10
+data.loc[((data[c] > 200000)), Range] = 11
+data = data.drop(['Annual Income ($)'], axis='columns')
 
-# Mã hóa giá trị text sang thành giá trị số
-categorical_columns = ['Gender', 'Profession']
-for cat_col in categorical_columns:
+#Lưu dữ liệu đã chuẩn hóa vào một file mới
+data.to_csv("data_preprocessing.csv", index=False)
 
-    encoder = LabelEncoder()
-
-    encoder = encoder.fit(data[cat_col])
-    print(encoder.classes_)
-
-    data[cat_col] = encoder.transform(data[cat_col])
-    print(data[cat_col])
-
-# chuẩn hóa dữ liệu
-columns_to_scale = ['Age', 'Annual Income ($)', 'Profession', 'Work Experience', 'Family Size']
-data[columns_to_scale] = ((data[columns_to_scale] - data[columns_to_scale].min()) /
-                         (data[columns_to_scale].max() - data[columns_to_scale].min()))
-print(data)
-
-# Lưu dữ liệu đã chuẩn hóa vào một file mới
-data.to_csv("Customers_data_preprocessing.csv", index=False)
-
-#Elbow Method
+#Elbow
 km = KMeans()
 k_range = range(1,10)
 #tổng bình phương khoảng cách (Within-Cluster Sum of Squares - WCSS) giữa các điểm dữ liệu và trung tâm của cụm.
@@ -50,15 +44,11 @@ for k in k_range:
     km.fit(data)
     wcss.append(km.inertia_)
 
-# vẽ biểu đồ
 plt.plot(k_range,wcss,marker='o')
 plt.title('Elbow Method')
-plt.ylabel('WCSS')
+plt.ylabel('Total distance')
 plt.xlabel('Cluster number')
 plt.show()
-
-
-
 
 
 
