@@ -5,11 +5,15 @@ from sklearn.cluster import KMeans
 # đọc file csv
 data = pd.read_csv('Customers.csv')
 
-# loại bỏ cột CustomerID, Gender
-data = data.drop(['CustomerID','Gender'], axis='columns')
+# loại bỏ cột CustomerID
+data = data.drop(['CustomerID'], axis='columns')
 
 # Xử lý thuộc tính Profession bị thiếu giá trị
 data['Profession'].fillna(data['Profession'].mode()[0], inplace=True)
+
+# One-hot encoding cho thuộc tính 'Gender'
+d = {"Male": 1, "Female": 0}
+data['Gender'] = data['Gender'].map(d)
 
 # One-hot encoding cho thuộc tính 'Profession'
 data = pd.get_dummies(data, columns=["Profession"], drop_first=True).astype(int)
@@ -36,7 +40,7 @@ data.to_csv("data_preprocessing.csv", index=False)
 
 #Elbow
 km = KMeans()
-k_range = range(1,10)
+k_range = range(1,15)
 #tổng bình phương khoảng cách (Within-Cluster Sum of Squares - WCSS) giữa các điểm dữ liệu và trung tâm của cụm.
 wcss = []
 for k in k_range:
