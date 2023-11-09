@@ -5,17 +5,17 @@ from sklearn.cluster import KMeans
 # đọc file csv
 data = pd.read_csv('Customers.csv')
 
-# loại bỏ cột CustomerID, Gender
-data = data.drop(['CustomerID', 'Gender'], axis='columns')
+# loại bỏ cột customer_id, gender
+data = data.drop(['customer_id', 'gender'], axis='columns')
 
 # Xử lý thuộc tính Profession bị thiếu giá trị
-data['Profession'].fillna(data['Profession'].mode()[0], inplace=True)
+data['profession'].fillna(data['profession'].mode()[0], inplace=True)
 
 # One-hot encoding cho thuộc tính 'Profession'
-data = pd.get_dummies(data, columns=["Profession"], drop_first=True).astype(int)
+data = pd.get_dummies(data, columns=["profession"], drop_first=True).astype(int)
 
 # Chuẩn hóa Min-Max Scaling cho các thuộc tính
-columns_to_scale = ['Annual Income ($)', 'Spending Score (1-100)', 'Work Experience', 'Family Size']
+columns_to_scale = ['annual_income', 'spending_score', 'work_experience', 'family_size']
 data[columns_to_scale] = ((data[columns_to_scale] - data[columns_to_scale].min()) /
                          (data[columns_to_scale].max() - data[columns_to_scale].min()))
 
@@ -34,7 +34,7 @@ for k in k_range:
 
 plt.plot(k_range,wcss,marker='o')
 plt.title('Elbow Method')
-plt.ylabel('Total distance')
+plt.ylabel('WCSS')
 plt.xlabel('Cluster number')
 plt.show()
 
