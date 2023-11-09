@@ -1,75 +1,44 @@
-const centroidModel = require("../models/centroidModel")
+const Centroids = require("../models/centroidModel")
+const patientModel= require('../models/patientModel');
+const { calculateDistance, getClusterFeatures } = require('../utils/centroidUtil');
+const { preprocessData } = require('../utils/dataUtils');
+
 const Joi = require("joi")
 
 const createCentroid = async (req, res, next) => {
     try {
-        const schema = Joi.object({
-            tenure: Joi.number()
-                .required()
-                .messages({
-                    "any.required": "Tenure is required",
-                }),
-            balanceRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            purchaseRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            oneoffPurchaseRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            instanllmentsPurchaseRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            creaditLimitRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            paymentsRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            mininumPaymentRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            balanceFrequencyRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            purchaseFrequencyRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            oneoffPurchaseFrequencyRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            purchaseIntanllmentsFrenquencyRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            cashAdvandFrequencyRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            prcFullPaymentRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            purchaseTrxRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            cashAdvanceTrxRange: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
-            cluester: Joi.number().required().messages({
-                "any.required": "Password is required",
-            }),
+        const centroidsToAdd = req.body.map(centroidString => {
+            const [age, spending_score,
+                 work_experience, family_size,
+                  profession_doctor, profession_engineer,
+                  profession_entertainment, profession_executive,
+                   profession_healthcare, profession_homemaker, 
+                   profession_lawyer, profession_marketing, 
+                   annual_income] = centroidString.split(',').map(parseFloat);
+
+            return {
+                age: parseFloat(age),
+                spending_score: parseFloat(spending_score),
+                work_experience: parseFloat(work_experience),
+                family_size: parseFloat(family_size),
+                profession_doctor: parseFloat(profession_doctor),
+                profession_engineer: parseFloat(profession_engineer),
+                profession_entertainment: parseFloat(profession_entertainment),
+                profession_executive: parseFloat(profession_executive),
+                profession_healthcare: parseFloat(profession_healthcare),
+                profession_homemaker: parseFloat(profession_homemaker),
+                profession_lawyer: parseFloat(profession_lawyer),
+                profession_marketing: parseFloat(profession_marketing),
+                annual_income: parseFloat(annual_income),
+            };
         });
-        const { error } = schema.validate(req.body);
-        if (error) {
-            return res.status(400).json({
-                message: error.details[0].message,
-            });
-        }
-        const existingCentroids = await centroidModel.find();
+        
+        const existingCentroids = await Centroids.find();
         if (existingCentroids.length > 0) {
             await Centroids.deleteMany({});
         }
         
-        const createdCentroids = await centroidModel.create(req.body);
+        const createdCentroids = await Centroids.create(centroidsToAdd);
 
         res.status(201).json({
             status: 'success',
@@ -78,6 +47,7 @@ const createCentroid = async (req, res, next) => {
             },
         });
     } catch (error) {
+        // console.log("🚀 ~ file: centroidController.js:51 ~ createCentroid ~ error:", error)
         res.status(500).json({
             status: 'fail',
             message: error.message,
@@ -85,4 +55,60 @@ const createCentroid = async (req, res, next) => {
     }
 }
 
+const getCentroidsNearest = async (req, res) => {
+    try {
+        const centroids = await Centroids.find().sort({ age: -1 });
+        const centroidData = centroids.map(centroid => {
+            return {
+                age: centroid.age,
+                spending_score: centroid.spending_score,
+                work_experience: centroid.work_experience,
+                family_size: centroid.family_size,
+                profession_docker: centroid.profession_docker,
+                profession_engineer: centroid.profession_engineer,
+                profession_entertainment: centroid.profession_entertainment,
+                profession_executive: centroid.profession_executive,
+                profession_healthcare: centroid.profession_healthcare,
+                diabetes_pedigree: centroid.diabetes_pedigree,
+                profession_homemaker: centroid.profession_homemaker,
+                profession_lawyer: centroid.profession_lawyer,
+                profession_marketing: centroid.profession_marketing,
+                annual_income: centroid.annual_income
+            };
+        });
+        const patient = req.body;
+        const patientProcessed = new patientModel(await preprocessData(patient));
 
+        let minDistance = Infinity;
+        let centroidNearest = centroidData[0];
+        for (let i = 0; i < centroidData.length; i++) {
+            const centroid = centroidData[i];
+            const distance = await calculateDistance(centroid, patientProcessed);
+            if (minDistance > distance) {
+                minDistance = distance;
+                centroidNearest = centroid;
+            }
+        }
+        
+        const clusteredFetures = await getClusterFeatures(centroidNearest, centroidData);
+        const result = await patientProcessed.save();
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                patient: result,
+                centroid: centroidNearest,
+                clusteredFetures: clusteredFetures,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: error.message,
+        });
+    }
+}; 
+
+
+
+module.exports = { createCentroid, getCentroidsNearest};

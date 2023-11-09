@@ -1,79 +1,59 @@
 const mongoose = require("mongoose");
 
 const centroidSchema = new mongoose.Schema({
-    tenure: {
-        type: Number,
-        require: true,
-    },
-    balanceRange: {
-        type: Number,
-        require: true,
-    },
-    purchaseRange: {
-        type: Number,
-        require: true,
-    },
-    oneoffPurchaseRange: {
-        type: Number,
-        require: true,
-    },
-    instanllmentsPurchaseRange: {
-        type: Number,
-        require: true,
-    },
-    cashAdvanceRange: {
-        type: Number,
-        require: true,
-    },
-    creaditLimitRange: {
-        type: Number,
-        require: true,
-    },
-    paymentsRange: {
-        type: Number,
-        require: true,
-    },
-    mininumPaymentRange: {
-        type: Number,
-        require: true,
-    },
-    balanceFrequencyRange: {
-        type: Number,
-        require: true,
-    },
-    purchaseFrequencyRange: {
-        type: Number,
-        require: true,
-    },
-    oneoffPurchaseFrequencyRange: {
-        type: Number,
-        require: true,
-    },
-    purchaseIntanllmentsFrenquencyRange: {
-        type: Number,
-        require: true,
-    },
-    cashAdvandFrequencyRange:{
-        type: Number,
-        require: true,
-    },
-    prcFullPaymentRange: {
-        type: Number,
-        require: true,
-    },
-    purchaseTrxRange: {
-        type: Number,
-        require: true,
-    },
-    cashAdvanceTrxRange:{ 
-        type: Number,
-        require: true,
-    },
-    cluester: {
-        type: Number,
-        require: true,
-    }
+  age: {
+    type: Number,
+    require: true,
+  },
+  spending_score: {
+    type: Number,
+    require: true,
+  },
+  work_experience: {
+    type: Number,
+    require: true,
+  },
+  family_size: {
+    type: Number,
+    require: true,
+  },
+  profession_doctor: {
+    type: Number,
+    require: true,
+  },
+  profession_engineer: {
+    type: Number,
+    default: 0
+  },
+  profession_entertainment: {
+    type: Number,
+    default: 0
+  },
+  profession_executive: {
+    type: Number,
+    default: 0
+  },
+  profession_healthcare: {
+    type: Number,
+    default: 0
+  },
+  profession_homemaker: {
+    type: Number,
+    default: 0
+  },
+  profession_lawyer: {
+    type: Number,
+    default: 0
+  },
+  profession_marketing: {
+    type: Number,
+    default: 0
+  },
+  annual_income: {
+    type: Number,
+    require: true,
+  },
 });
 
 const Centroids = mongoose.model("Centroids", centroidSchema);
-module.exports = { Centroids };
+module.exports =  Centroids ;
