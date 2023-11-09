@@ -1,4 +1,4 @@
-CustomerID,Gender,Age,Annual Income ($),Spending Score (1-100),Profession,Work Experience,Family Size
+customer_id,gender,age,annual_income,spending_score,profession,work_experience,family_size
 1,Male,19,15000,39,Healthcare,1,4
 2,Male,21,35000,81,Engineer,3,3
 3,Female,20,86000,6,Engineer,1,1
