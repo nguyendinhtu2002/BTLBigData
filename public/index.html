@@ -1,49 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dự đoán khách hàng</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="flex mx-auto justify-center mt-[40px]">
-        <div class="w-[500px] shadow-md rounded-[10px]">
-            <h1 class="text-center text-green-600 text-[30px] font-medium mt-[5px] mb-[8px]">Dự đoán nhóm khách hàng</h1>
-            <div class="p-[10px]">
-                <div class="mb-[5px]">
-                    <label for="inputGender" class="block">Gender:</label>
-                    <input type="text" id="inputGender" placeholder="Giới tính" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-                <div class="mb-[5px]">
-                    <label for="inputAge" class="block">Age:</label>
-                    <input type="number" id="inputAge" placeholder="Tuổi" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-                <div class="mb-[5px]">
-                    <label for="inputAnnualIncome" class="block">Annual Income:</label>
-                    <input type="number" id="inputAnnualIncome" placeholder="Thu nhập($)" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-                <div class="mb-[5px]">
-                    <label for="inputProfession" class="block">Profession:</label>
-                    <input type="text" id="inputProfession" placeholder="Nghề nghiệp" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-                <div class="mb-[5px]">
-                    <label for="inputWorkExperience" class="block">Work Experience:</label>
-                    <input type="number" id="inputWordExperience" placeholder="Kinh nghiệm làm việc" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-                <div class="mb-[5px]">
-                    <label for="inputFamilySize" class="block">Family Size:</label>
-                    <input type="number" id="inputFamilySize" placeholder="Quy mô gia đình" class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1">
-                </div>
-            </div>
-            <div class="flex justify-center mb-[10px]">
-                <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">Dự đoán</button>
-            </div>
-            <div class="p-[10px]">
-                <h3 class="text-[19px] text-green-600 font-bold ">Result: </h3>
-            </div>
+      <div class="w-[500px] shadow-md rounded-[10px]">
+        <h1
+          class="text-center text-green-600 text-[30px] font-medium mt-[5px] mb-[8px]"
+        >
+          Dự đoán nhóm khách hàng
+        </h1>
+        <div class="p-[10px]">
+          <div class="mb-[5px]">
+            <label for="inputAge" class="block">Age:</label>
+            <input
+              type="number"
+              id="inputAge"
+              placeholder="Tuổi"
+              class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+            />
+          </div>
+          <div class="mb-[5px]">
+            <label for="inputAnnualIncome" class="block">Annual Income:</label>
+            <input
+              type="number"
+              id="inputAnnualIncome"
+              placeholder="Thu nhập($)"
+              class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+            />
+          </div>
+          <div class="mb-[5px]">
+            <label for="inputSpending_score" class="block"
+              >Spending Score:</label
+            >
+            <input
+              type="number"
+              id="inputSpending_score"
+              placeholder="Điểm chi tiêu($)"
+              class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+            />
+          </div>
+          <div class="mb-[5px]">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Select an option</label
+            >
+            <select
+              id="work"
+              class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option>Choose a Profession</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Executive">Executive</option>
+              <option value="Homemaker">Homemaker</option>
+              <option value="Lawyer">Lawyer</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+          <div class="mb-[5px]">
+            <label for="inputWorkExperience" class="block"
+              >Work Experience:</label
+            >
+            <input
+              type="number"
+              id="inputWordExperience"
+              placeholder="Kinh nghiệm làm việc"
+              class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+            />
+          </div>
+          <div class="mb-[5px]">
+            <label for="inputFamilySize" class="block">Family Size:</label>
+            <input
+              type="number"
+              id="inputFamilySize"
+              placeholder="Quy mô gia đình"
+              class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+            />
+          </div>
         </div>
+        <div class="flex justify-center mb-[10px]">
+          <button
+            type="button"
+            id="predictButton"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md"
+          >
+            Dự đoán
+          </button>
+        </div>
+        <div class="p-[10px]">
+          <p class="text-[19px] font-bold" id ="result"></p>
+        
+
+        </div>
+      </div>
     </div>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
 </html>
