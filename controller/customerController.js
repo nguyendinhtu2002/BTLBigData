@@ -1,8 +1,8 @@
-const  Patients  = require("../models/patientModel");
+const  Customers  = require("../models/customerModel");
 
-const getPatients = async (req, res) => {
+const getCustomers = async (req, res) => {
     try {
-        const patients = await Patients.find();
+        const patients = await Customers.find();
         const patientString = patients.map(patient => {
             return `${patient.age},${patient.annual_income},${patient.spending_score},${patient.work_experience},${patient.family_size},${patient.profession_doctor},${patient.profession_engineer},${patient.profession_entertainment},${patient.profession_executive},${patient.profession_healthcare},${patient.profession_homemaker},${patient.profession_lawyer},${patient.profession_marketing}`;
         }).join('\n');
@@ -14,4 +14,4 @@ const getPatients = async (req, res) => {
 
 
 
-module.exports = { getPatients };
+module.exports = { getCustomers };

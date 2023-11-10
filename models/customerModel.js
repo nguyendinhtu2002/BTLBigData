@@ -19,7 +19,7 @@ const patientSchema = new mongoose.Schema({
   },
   profession_doctor: {
     type: Number,
-    require: true,
+    default: 0,
   },
   profession_engineer: {
     type: Number,
@@ -55,5 +55,5 @@ const patientSchema = new mongoose.Schema({
   },
 });
 
-const Patient = mongoose.model("Patient", patientSchema);
-module.exports = Patient;
+const Customers = mongoose.model("Customers", patientSchema);
+module.exports = Customers;

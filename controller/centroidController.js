@@ -1,5 +1,5 @@
 const Centroids = require("../models/centroidModel")
-const patientModel= require('../models/patientModel');
+const Customer= require('../models/customerModel');
 const { calculateDistance, getClusterFeatures } = require('../utils/centroidUtil');
 const { preprocessData } = require('../utils/dataUtils');
 
@@ -8,16 +8,16 @@ const Joi = require("joi")
 const createCentroid = async (req, res, next) => {
     try {
         const centroidsToAdd = req.body.map(centroidString => {
-            const [age, spending_score,
+            const [age,annual_income, spending_score,
                  work_experience, family_size,
                   profession_doctor, profession_engineer,
                   profession_entertainment, profession_executive,
                    profession_healthcare, profession_homemaker, 
-                   profession_lawyer, profession_marketing, 
-                   annual_income] = centroidString.split(',').map(parseFloat);
+                   profession_lawyer, profession_marketing] = centroidString.split(',').map(parseFloat);
 
             return {
                 age: parseFloat(age),
+                annual_income: parseFloat(annual_income),
                 spending_score: parseFloat(spending_score),
                 work_experience: parseFloat(work_experience),
                 family_size: parseFloat(family_size),
@@ -29,7 +29,6 @@ const createCentroid = async (req, res, next) => {
                 profession_homemaker: parseFloat(profession_homemaker),
                 profession_lawyer: parseFloat(profession_lawyer),
                 profession_marketing: parseFloat(profession_marketing),
-                annual_income: parseFloat(annual_income),
             };
         });
         
@@ -47,7 +46,6 @@ const createCentroid = async (req, res, next) => {
             },
         });
     } catch (error) {
-        // console.log("🚀 ~ file: centroidController.js:51 ~ createCentroid ~ error:", error)
         res.status(500).json({
             status: 'fail',
             message: error.message,
@@ -64,12 +62,11 @@ const getCentroidsNearest = async (req, res) => {
                 spending_score: centroid.spending_score,
                 work_experience: centroid.work_experience,
                 family_size: centroid.family_size,
-                profession_docker: centroid.profession_docker,
+                profession_doctor: centroid.profession_doctor,
                 profession_engineer: centroid.profession_engineer,
                 profession_entertainment: centroid.profession_entertainment,
                 profession_executive: centroid.profession_executive,
                 profession_healthcare: centroid.profession_healthcare,
-                diabetes_pedigree: centroid.diabetes_pedigree,
                 profession_homemaker: centroid.profession_homemaker,
                 profession_lawyer: centroid.profession_lawyer,
                 profession_marketing: centroid.profession_marketing,
@@ -77,7 +74,7 @@ const getCentroidsNearest = async (req, res) => {
             };
         });
         const patient = req.body;
-        const patientProcessed = new patientModel(await preprocessData(patient));
+        const patientProcessed = new Customer(await preprocessData(patient));
 
         let minDistance = Infinity;
         let centroidNearest = centroidData[0];
@@ -91,6 +88,7 @@ const getCentroidsNearest = async (req, res) => {
         }
         
         const clusteredFetures = await getClusterFeatures(centroidNearest, centroidData);
+      
         const result = await patientProcessed.save();
 
         res.status(200).json({

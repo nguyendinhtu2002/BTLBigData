@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const annual_income = document.getElementById("inputAnnualIncome");
     const spending_score = document.getElementById("inputSpending_score");
     const work = document.getElementById("work");
-    const word_experience = document.getElementById("inputWordExperience");
+    const work_experience = document.getElementById("inputWordExperience");
     const family_size = document.getElementById("inputFamilySize");
     const resultParagraph = document.getElementById("result");
     const predictButton = document.getElementById("predictButton");
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             annual_income: parseFloat(annual_income.value),
             spending_score: parseFloat(spending_score.value),
             work: selectedValue, 
-            word_experience: parseFloat(word_experience.value),
+            work_experience: parseFloat(work_experience.value),
             family_size: parseInt(family_size.value),
         };
 

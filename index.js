@@ -5,7 +5,7 @@ const cors = require("cors");
 const connectDatabase = require("./config/connectToDb");
 // const patientRouter = require("./routes/patientRouter");
 const centroidRouter = require("./routes/centroidRoute");
-const patientRouter = require("./routes/patientRouter");
+const customerRoute = require("./routes/customerRoute");
 const path = require('path');
 
 dotenv.config();
@@ -17,7 +17,7 @@ connectDatabase();
 
 // app.use('/api/v1/patient', patientRouter);
 app.use('/api/', centroidRouter);
-app.use('/api/patients', patientRouter);
+app.use('/api/customer', customerRoute);
 
 app.listen(process.env.PORT || 5000, () =>
   console.log(`Server started on ${process.env.PORT}`)

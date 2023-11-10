@@ -3,7 +3,23 @@ const minMaxScaling = (value, min, max) => {
 };
 
 const preprocessData = (data) => {
+  const ranges = {
+    annual_income: { min: 0, max: 189974  },
+    spending_score: { min: 0, max: 100 },
+    work_experience: { min: 0, max: 17 },
+    family_size: { min: 1, max: 9 },
+  };
   const preprocessedData = { ...data };
+
+  for (const attribute in ranges) {
+    if (preprocessedData.hasOwnProperty(attribute)) {
+      preprocessedData[attribute] = minMaxScaling(
+        preprocessedData[attribute],
+        ranges[attribute].min,
+        ranges[attribute].max
+      );
+    }
+  }
 
   switch (preprocessedData.work) {
     case "Healthcare":
@@ -32,59 +48,6 @@ const preprocessData = (data) => {
       break;
     default:
       break;
-  }
-  if (
-    preprocessedData.annual_income >= 0 &&
-    preprocessedData.annual_income <= 20000
-  ) {
-    preprocessedData.annual_income = 1;
-  } else if (
-    preprocessedData.annual_income > 20000 &&
-    preprocessedData.annual_income <= 40000
-  ) {
-    preprocessedData.annual_income = 2;
-  } else if (
-    preprocessedData.annual_income > 40000 &&
-    preprocessedData.annual_income <= 60000
-  ) {
-    preprocessedData.annual_income = 3;
-  } else if (
-    preprocessedData.annual_income > 60000 &&
-    preprocessedData.annual_income <= 80000
-  ) {
-    preprocessedData.annual_income = 4;
-  } else if (
-    preprocessedData.annual_income > 80000 &&
-    preprocessedData.annual_income <= 100000
-  ) {
-    preprocessedData.annual_income = 5;
-  } else if (
-    preprocessedData.annual_income > 100000 &&
-    preprocessedData.annual_income <= 120000
-  ) {
-    preprocessedData.annual_income = 6;
-  } else if (
-    preprocessedData.annual_income > 120000 &&
-    preprocessedData.annual_income <= 140000
-  ) {
-    preprocessedData.annual_income = 7;
-  } else if (
-    preprocessedData.annual_income > 140000 &&
-    preprocessedData.annual_income <= 160000
-  ) {
-    preprocessedData.annual_income = 8;
-  } else if (
-    preprocessedData.annual_income > 160000 &&
-    preprocessedData.annual_income <= 180000
-  ) {
-    preprocessedData.annual_income = 9;
-  } else if (
-    preprocessedData.annual_income > 180000 &&
-    preprocessedData.annual_income <= 200000
-  ) {
-    preprocessedData.annual_income = 10;
-  } else if (preprocessedData.annual_income > 20000) {
-    preprocessedData.annual_income = 11;
   }
 
   return preprocessedData;
